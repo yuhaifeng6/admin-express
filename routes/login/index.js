@@ -12,14 +12,20 @@ router.post('/login', function (req, res) {
         return
     }
 
-    db.query('SELECT * from users', [], function(results) {
-        var jsonResult
-        results.forEach(val => {
-            if (val.username == username && val.userpwd == userpwd) {
-                jsonResult = val
-            }
-        })
-        res.json(jsonResult)
+    let sql = `SELECT * FROM users WHERE username = '${username}' AND userpwd = '${userpwd}'`
+
+    db.query(sql, [username, userpwd], function(results) {
+        if (results.length > 0) {
+            let user = results[0]
+            user.code = 0
+            user.msg = '登录成功！'
+            res.send(user)
+        } else {
+            res.send({
+                code: -2,
+                msg: "该用户不存在，请注册！"
+            })
+        }
     })
 })
 
