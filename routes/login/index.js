@@ -21,7 +21,7 @@ router.post('/login', function (req, res) {
             delete user.userpwd
             user.code = 0
             user.msg = '登录成功！'
-            tokenUtil.setToken(username, userpwd)
+            tokenUtil.setToken(user.uid, username, userpwd)
                 .then(token => {
                     user.token = token
                     res.send(user)

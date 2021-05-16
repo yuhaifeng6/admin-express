@@ -5,9 +5,10 @@ var expiresIn = {
     expiresIn: 3600 * 24 * 1
 }
 
-exports.setToken = function(username, userpwd){
+exports.setToken = function(userid, username, userpwd){
 	return new Promise((resolve, reject)=>{
 		const token = 'Bearer ' + jwt.sign({
+			userid: userid,
 			username: username,
 			userpwd: userpwd
 		}, signkey, expiresIn)
