@@ -13,7 +13,10 @@ router.post('/login', function (req, res) {
         return
     }
 
-    let sql = `SELECT * FROM users WHERE username = '${username}' AND userpwd = '${userpwd}'`
+    let sql = `SELECT * FROM users, userpermission, routes WHERE
+            username = '${username}' AND userpwd = '${userpwd}'
+            AND users.permissionid = userpermission.identifyid
+            AND users.permissionid = routes.routeid`
 
     db.query(sql, [username, userpwd], function(results) {
         if (results.length > 0) {
