@@ -15,6 +15,17 @@ router.post('/getUser', (req, res) => {
                 msg: '您无权操作！'
             })
             return
+        } else {
+            // 查询所有的普通用户
+            let selNormalUsers = `SELECT * FROM users, userinfo WHERE permissionid = 3
+                                AND users.uid = userinfo.uid`
+            db.query(selNormalUsers, [], (result) => {
+                console.log('输出所有的普通用户', result)
+                res.send({
+                    code: 0,
+                    data: result
+                })
+            })
         }
     })
 })
