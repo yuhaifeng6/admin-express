@@ -32,25 +32,38 @@ router.post('/getUser', (req, res) => {
 router.post('/delUser', (req, res) => {
     let { uid } = req.body
     let delsql = `DELETE users, userinfo FROM users LEFT JOIN userinfo ON users.uid = userinfo.uid WHERE users.uid = ${uid}`
-    try {
-        db.query(delsql, [uid], (result) => {
-            console.log(111, result)
-            if (result.affectedRows == 2) {
-                res.send({
-                    code: 0,
-                    msg: '删除成功！'
-                })
-            } else {
-                res.send({
-                    code: -1,
-                    msg: '删除失败！'
-                })
-            }
-        })
-    } catch (error) {
-        
-    }
-    
+    db.query(delsql, [uid], (result) => {
+        if (result.affectedRows == 2) {
+            res.send({
+                code: 0,
+                msg: '删除成功！'
+            })
+        } else {
+            res.send({
+                code: -1,
+                msg: '删除失败！'
+            })
+        }
+    })  
+})
+
+/** 编辑用户 */
+router.post('/editUser', (req, res) => {
+    let { uid, username, sex } = req.body
+    let editsql = `UPDATE users, userinfo SET users.username = '${username}', userinfo.sex = ${sex} WHERE users.uid = ${uid} AND userinfo.uid = ${uid}`
+    db.query(editsql, [uid], (result) => {
+        if (result.affectedRows == 2) {
+            res.send({
+                code: 0,
+                msg: '编辑成功！'
+            })
+        } else {
+            res.send({
+                code: -1,
+                msg: '编辑失败！'
+            })
+        }
+    })
 })
 
 module.exports = router
